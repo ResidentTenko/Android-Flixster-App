@@ -5,6 +5,9 @@
       <map>
         <entry key="..\:/Documents/02_CodePath/Project_03_Flixster/Flixster/app/src/main/res/layout/activity_main.xml" value="0.3446557971014493" />
         <entry key="..\:/Documents/02_CodePath/Project_03_Flixster/Flixster/app/src/main/res/layout/flixter_item_row.xml" value="0.33" />
+        <entry key="..\:/Documents/02_CodePath/Project_03_Flixster/Flixster/app/src/main/res/layout/fragment_now_playing_movies.xml" value="0.67" />
+        <entry key="..\:/Documents/02_CodePath/Project_03_Flixster/Flixster/app/src/main/res/layout/fragment_now_playing_movies_list.xml" value="0.3625" />
+        <entry key="..\:/Documents/02_CodePath/Project_03_Flixster/Flixster/app/src/main/res/layout/model_playing_movies.xml" value="0.25" />
       </map>
     </option>
   </component>

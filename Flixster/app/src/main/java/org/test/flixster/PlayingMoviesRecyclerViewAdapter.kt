@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 /**
- * [RecyclerView.Adapter] that can display [PlayingMovies]
+ * [RecyclerView.Adapter] that can display [NowPlayingMovies]
  * Primary Constructor takes a list of Playing Movies
  */
-class PlayingMoviesRecyclerViewAdapter(private val myMovies: List<PlayingMovies>)
+class PlayingMoviesRecyclerViewAdapter(private val myMovies: List<NowPlayingMovies>,
+                                       private val mListener: OnListFragmentInteractionListener?
+                                       )
     :RecyclerView.Adapter<PlayingMoviesRecyclerViewAdapter.MovieViewHolder>() {
 
     /**
@@ -32,10 +34,10 @@ class PlayingMoviesRecyclerViewAdapter(private val myMovies: List<PlayingMovies>
          *  Member variables and their type of the inner class
          *  We don't need the init since we have joined the declaration and initialization together
          */
-
-        val movieImage:ImageView = itemView.findViewById(R.id.movieImageTv)
-        val movieTitle: TextView = itemView.findViewById(R.id.movieTitleTv)
-        val movieDescription: TextView = itemView.findViewById(R.id.movieDescriptionTv)
+        var mItem: NowPlayingMovies? = null
+        val movieImage:ImageView = mView.findViewById(R.id.movieImageTv) as ImageView
+        val movieTitle: TextView = mView.findViewById(R.id.movieTitleTv)
+        val movieDescription: TextView = mView.findViewById(R.id.movieDescriptionTv)
     }
 
     /**
@@ -50,7 +52,7 @@ class PlayingMoviesRecyclerViewAdapter(private val myMovies: List<PlayingMovies>
         // inflate the custom layout
         val inflater = LayoutInflater.from(context)
         // connect it to the flixter_item_row xml
-        val contactView = inflater.inflate(R.layout.flixter_item_row, parent,false)
+        val contactView = inflater.inflate(R.layout.fragment_now_playing_movies, parent,false)
 
         return MovieViewHolder(contactView)
     }
@@ -77,6 +79,13 @@ class PlayingMoviesRecyclerViewAdapter(private val myMovies: List<PlayingMovies>
         // set the holder text values to match the values of the data model from the class
         holder.movieTitle.text = movie.movieTitle
         holder.movieDescription.text = movie.movieDescription
+
+        //listener
+        holder.mView.setOnClickListener {
+            holder.mItem?.let { movie ->
+                mListener?.onItemClick(movie)
+            }
+        }
 
         // removed one of the '/' - check if this breaks
         var glideMovieImageUrl = "https://image.tmdb.org/t/p/w500" + movie.movieImageUrl
