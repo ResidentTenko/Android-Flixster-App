@@ -5,18 +5,32 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import org.test.flixster.R.id
 
 
 /**
  * [RecyclerView.Adapter] that can display [NowPlayingMovies]
  * Primary Constructor takes a list of Playing Movies
  */
-class PlayingMoviesRecyclerViewAdapter(private val myMovies: List<NowPlayingMovies>,
-                                       private val mListener: OnListFragmentInteractionListener?
+class NowPlayingRVAdapter(private val myMovies: List<NowPlayingMovies>,
+                          private val mListener: OnListFragmentInteractionListener?
                                        )
-    :RecyclerView.Adapter<PlayingMoviesRecyclerViewAdapter.MovieViewHolder>() {
+    :RecyclerView.Adapter<NowPlayingRVAdapter.MovieViewHolder>() {
+
+    /**
+     *Specify the look of the ViewHolder as it comes into the screen; It is the look of each row
+     * notice that the look of the ViewHolder is based on the look created in the row xml
+     * so all of that design we did is what the user will see
+     * parent is of type ViewGroup and viewType is of type int
+     */
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+        // create a variable and set it to the context property of ViewGroup objects
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.fragment_now_playing_movies, parent, false)
+        return MovieViewHolder(view)
+    }
 
     /**
      * This inner class lets us refer to all the different View elements
@@ -35,27 +49,17 @@ class PlayingMoviesRecyclerViewAdapter(private val myMovies: List<NowPlayingMovi
          *  We don't need the init since we have joined the declaration and initialization together
          */
         var mItem: NowPlayingMovies? = null
-        val movieImage:ImageView = mView.findViewById(R.id.movieImageTv) as ImageView
-        val movieTitle: TextView = mView.findViewById(R.id.movieTitleTv)
-        val movieDescription: TextView = mView.findViewById(R.id.movieDescriptionTv)
+        val mMovieImage: ImageView = mView.findViewById<View>(id.movieImageTv) as ImageView
+        val mMovieTitle: TextView = mView.findViewById<View>(id.movieTitleTv) as TextView
+        val mMovieDescription: TextView = mView.findViewById<View>(id.movieDescriptionTv) as TextView
+
+        /*
+        override fun toString(): String {
+            return "$mMovieTitle $mMovieDescription'"
+        }
+         */
     }
 
-    /**
-     *Specify the look of the ViewHolder as it comes into the screen; It is the look of each row
-     * notice that the look of the ViewHolder is based on the look created in the row xml
-     * so all of that design we did is what the user will see
-     * parent is of type ViewGroup and viewType is of type int
-     */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        // create a variable and set it to the context property of ViewGroup objects
-        val context = parent.context
-        // inflate the custom layout
-        val inflater = LayoutInflater.from(context)
-        // connect it to the flixter_item_row xml
-        val contactView = inflater.inflate(R.layout.fragment_now_playing_movies, parent,false)
-
-        return MovieViewHolder(contactView)
-    }
 
     /**
      * On bind view holder takes the views that have been recycled off screen
@@ -77,8 +81,13 @@ class PlayingMoviesRecyclerViewAdapter(private val myMovies: List<NowPlayingMovi
         // get the position of the current data model
         val movie = myMovies[position]
         // set the holder text values to match the values of the data model from the class
-        holder.movieTitle.text = movie.movieTitle
-        holder.movieDescription.text = movie.movieDescription
+        holder.mMovieTitle.text = movie.movieTitle
+        holder.mMovieDescription.text = movie.movieDescription
+
+        Glide.with(holder.mView)
+            .load("https://image.tmdb.org/t/p/w500/" + movie.movieImageUrl)
+            .centerInside()
+            .into(holder.mMovieImage)
 
         //listener
         holder.mView.setOnClickListener {
@@ -87,17 +96,11 @@ class PlayingMoviesRecyclerViewAdapter(private val myMovies: List<NowPlayingMovi
             }
         }
 
-        // removed one of the '/' - check if this breaks
-        var glideMovieImageUrl = "https://image.tmdb.org/t/p/w500" + movie.movieImageUrl
-
-        // set the holder for the movie image - set it in bindViewHolder
-        Glide.with(holder.mView)
-            .load(glideMovieImageUrl)
-            .centerInside()
-            .into(holder.movieImage)
     }
 
     // get the current number of movies in the list
-    override fun getItemCount(): Int {return myMovies.size}
+    override fun getItemCount(): Int {
+        return myMovies.size
+    }
 
 }
