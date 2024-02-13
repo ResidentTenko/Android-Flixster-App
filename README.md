@@ -2,7 +2,7 @@
 
 Submitted by: **Fidel Ojimba**
 
-**Flixsterp** is a movie browsing app that allows users to browse movies currently playing in theaters.
+**Flixster** is a movie browsing app that allows users to browse movies currently playing in theaters.
 
 Time spent: **10** hours spent in total
 
